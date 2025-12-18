@@ -11,10 +11,10 @@
 			const options: Option[] = Array.isArray(data.options) ? data.options as Option[] : [];
 </script>
 
-<section class="hero page-title">
-	<h3 class="title">{data.title}</h3>
-</section>
 <section class="section">
+	<section class="hero page-title">
+		<h3 class="title">{data.title}</h3>
+	</section>
 	<div class="container">
 		<div class="content content-border">
 			<div class="columns">

@@ -177,10 +177,10 @@
 	});
 </script>
 
-<section class="hero page-title">
-	<h3 class="title">{m.agenda()}</h3>
-</section>
 <section class="section agenda-section">
+	<section class="hero page-title">
+		<h3 class="title">{m.agenda()}</h3>
+	</section>
 	<div class="container" bind:this={container}>
 		<div class="content">
 			<div class="tabs is-toggle is-fullwidth">

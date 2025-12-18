@@ -20,10 +20,10 @@
   }
 </script>
 
-<section class="hero page-title">
-	<h3 class="title">{data.org_team.title}</h3>
-</section>
 <section class="section">
+    <section class="hero page-title">
+      <h3 class="title">{data.org_team.title}</h3>
+    </section>
     <div class="container">
         <div class="content">
           {#if data.org_team.content}

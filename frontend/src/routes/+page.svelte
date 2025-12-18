@@ -378,15 +378,6 @@
 </section>
 {/if}
 
-{#if settings.show_newsletter_subscription}
-<section class="" style="background-image: url('/img/intheloop.png'); background-size: cover;">
-    <div class="container p-6">
-        <p class="title header--medium has-text-white">Stay in the loop</p>
-        <p class="subtitle text--large has-text-white">Keep track of festival progress and latest news!</p>
-    </div>
-</section>
-{/if}
-
 <style>
     img {
         width: 100%;

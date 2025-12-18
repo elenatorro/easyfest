@@ -2,10 +2,10 @@
   let { data } = $props();
 </script>
 
-<section class="hero page-title">
-	<h3 class="title">{data.title}</h3>
-</section>
 <section class="section">
+    <section class="hero page-title">
+        <h3 class="title">{data.title}</h3>
+    </section>
     <div class="container">
         <ul class="list has-hoverable-list-items">
             {#each data.sponsors as sponsor}

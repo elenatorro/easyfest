@@ -25,6 +25,7 @@ $color-text: $color-dark;
 // Typography
 $font-family-primary: 'Bricolage Grotesque', sans-serif;
 $font-family-secondary: 'Bricolage Grotesque', sans-serif;
+$font-family-header: "Dokdo", sans-serif;
 
 // Font sizes
 $font-size-xxl: 4rem; // 64px
@@ -83,15 +84,15 @@ $control-border-width: 0.125rem; // 2px
 }
 
 .header--large {
-	@include ec-typography(1.2, 3em, $font-family-secondary);
+	@include ec-typography(1.2, 3em, $font-family-header);
 	@include mixins.tablet {
-		@include ec-typography(1.2, 5em, $font-family-secondary);
+		@include ec-typography(1.2, 5em, $font-family-header);
 	}
 }
 .header--medium {
-	@include ec-typography(1.2, 2rem, $font-family-secondary);
+	@include ec-typography(1.2, 2rem, $font-family-primary);
 	@include mixins.tablet {
-		@include ec-typography(1.2, 2.5rem, $font-family-secondary);
+		@include ec-typography(1.2, 2.5rem, $font-family-primary);
 	}
 }
 .header--small {
@@ -100,6 +101,16 @@ $control-border-width: 0.125rem; // 2px
 		@include ec-typography(1.2, $font-size-lg);
 	}
 }
+
+// body {
+// 	background-image: url('img/background_catedral.png');
+//     width: 100vw;
+//     background-attachment: fixed;
+//     background-position: top;
+//     background-repeat: no-repeat;
+//     background-size: cover;
+//     position: absolute;
+// }
 
 .footer .column {
 	display: flex;
@@ -140,7 +151,7 @@ $control-border-width: 0.125rem; // 2px
 }
 
 .text--small--uppercase {
-	@include ec-typography(1.4, $font-size-xs, $font-family-primary, 400, uppercase);
+	@include ec-typography(1.4, $font-size-xs, $font-family-secondary, 400, uppercase);
 }
 
 body {
@@ -156,7 +167,13 @@ body {
 .container-all {
 	min-height: 100vh;
 	display: grid;
-	grid-template-rows: auto auto 1fr auto;
+    grid-template-rows: 5em 1fr auto;
+    // grid-auto-flow: row;
+}
+
+.container-main {
+    min-height: 100vh;
+    grid-template-rows: 5em 1fr 0.2fr auto;
 }
 
 .navbar {
@@ -164,6 +181,8 @@ body {
 	width: 100%;
 	transition: transform 0.1s ease-in-out;
 	padding: 2rem 5rem;
+    // background: #ffffff9c;
+    background: transparent;
 
 	&-item {
 		font-weight: 600;
@@ -176,6 +195,7 @@ body {
 
 		&.brand {
 			// FIXME
+            background: none;
 			@include mixins.desktop {
 				padding: 0;
 				transform: scale(1.2);
@@ -202,6 +222,13 @@ body {
 		}
 	}
 }
+
+// a.navbar-item {
+//     background: rgba(241, 101, 8, 0.796);
+//     color: white;
+//     margin: 0 0.5rem;
+//     border-radius: 0.5rem;
+// }
 
 .is-concealed {
 	transform: translateY(-100%);
@@ -262,7 +289,7 @@ body {
 }
 
 .page-title {
-	padding: 2rem 5rem;
+	padding: 2rem 0;
 	.title {
 		font-size: $font-size-lg;
 		@include mixins.mobile {

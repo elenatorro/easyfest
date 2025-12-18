@@ -47,6 +47,7 @@
   {@render children?.()}
 
   <Footer {data}/>
+  <div class="parallax-header"></div>
 </ParaglideJS>
 
 <style>
