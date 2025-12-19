@@ -1,5 +1,5 @@
 # Build stage
-FROM node:22.16-bullseye
+FROM node:22.16-bullseye AS build
 
 WORKDIR /app
 COPY package*.json ./
