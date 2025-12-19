@@ -50,12 +50,12 @@
 					<ul>
 						{#if data.show_cookie_policy}
 							<li>
-								<a href="/cookie-policy" class="text--medium">{m.cookie_policy()}</a>
+								<a href="/cookie-policy" class="text--medium footer-item">{m.cookie_policy()}</a>
 							</li>
 						{/if}
 						{#if data.show_privacy_policy}
 							<li>
-								<a href="/privacy-policy" class="text--medium"
+								<a href="/privacy-policy" class="text--medium footer-item"
 									>{m.privacy_policy()}</a
 								>
 							</li>
@@ -66,14 +66,14 @@
 			<div class="column">
                 <ul>
                     {#if data.show_org_team}
-                    <li><a href="/org-team" class="text--medium">{m.org_team()}</a></li>
+                    <li><a href="/org-team" class="text--medium footer-item">{m.org_team()}</a></li>
                     {/if}
-                    <li><a href="/contact-info" class="text--medium">{m.contact_info()}</a></li>
+                    <li><a href="/contact-info" class="text--medium footer-item">{m.contact_info()}</a></li>
                     {#if data.show_code_of_conduct}
-                    <li><a href="/code-of-conduct" class="text--medium">{m.code_of_conduct()}</a></li>
+                    <li><a href="/code-of-conduct" class="text--medium footer-item">{m.code_of_conduct()}</a></li>
                     {/if}
                     {#if data.show_press_kit}
-                    <li><a href="/press-kit" class="text--medium">{m.press_kit()}</a></li>
+                    <li><a href="/press-kit" class="text--medium footer-item">{m.press_kit()}</a></li>
                     {/if}
                 </ul>
             </div>
@@ -82,7 +82,7 @@
 					<ul>
 						{#each data.social_media_links as link}
 							{@const icon = PLATFORMS_MAP[link.platform]}
-							<li class="is-inline-block m-2">
+							<li class="footer-item is-inline-block m-2">
 								<a
 									href={link.url}
 									rel="me"
@@ -93,7 +93,7 @@
 								</a>
 							</li>
 						{/each}
-						<li class="is-inline-block m-2">
+						<li class="footer-item">
 							<a
 								href="https://www.facebook.com/profile.php?id=61571579560904 "
 								rel="me"

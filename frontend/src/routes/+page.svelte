@@ -1,8 +1,6 @@
 <script>
     import { onMount } from 'svelte'
     import SvelteMarkdown from '@humanspeak/svelte-markdown'
-
-    import heroFallback from '../assets/images/easyfest-illustration.png'
     import Marquee from '../lib/Marquee'
 
     const storage_url = import.meta.env.VITE_STORAGE_URL
@@ -139,7 +137,23 @@
                     <p class="subtitle">{homepage.dates_and_location}</p>
                     {/if}
                 </div>
+                {#if homepage && homepage.richtitle}
+                {@const mdrichtitle = homepage.richtitle}
+                <section class="subsection">
+                    <div class="container">
+                        <div class="is-flex is-flex-direction-row is-justify-content-center">
+                            <SvelteMarkdown source={mdrichtitle} />
+                        </div>
+
+                    </div>
+                </section>
+                {/if}
             </div>
+            {#if homepage && homepage.hero_image}
+                <div class="hero-image">
+                    <img src="{storage_url}{homepage.hero_image.url}" alt="{homepage.hero_image.caption || 'Hero image'}" />
+                </div>
+            {/if}
         </div>
     </div>
 </section>
@@ -158,17 +172,6 @@
     </div>
 </section>
 {/if} -->
-{#if homepage && homepage.richtitle}
-{@const mdrichtitle = homepage.richtitle}
-<section class="section">
-    <div class="container">
-        <div class="is-flex is-flex-direction-row is-justify-content-center">
-            <SvelteMarkdown source={mdrichtitle} />
-        </div>
-
-    </div>
-</section>
-{/if}
 {#if homepage && homepage.about_section}
 {@const title = homepage.about_section.title}
 {@const image = homepage.about_section.image}
@@ -183,11 +186,6 @@
     </div>
     <div class="container">
         <div class="level columns">
-            <!-- <div class="column">
-                <figure class="image is-5by4">
-                    <img src="{storage_url}{image.url}" alt={image.caption}/>
-                </figure>
-            </div> -->
             <div class="column is-three-fifths has-text-centered is-offset-one-fifth content is-size-6-mobile is-size-5">
                 <SvelteMarkdown options={{mangle: false}} source={mdContent} />
             </div>

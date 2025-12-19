@@ -32,18 +32,18 @@
           <div class="columns is-multiline mt-6">
             {#each data.speaker_profiles as speaker_profile, i}
 
-                <div class="column is-half">
+                <div class="column is-one-quarter">
                     <div class="card">
                         <div class="card-image is-clickable">
                           <img onclick={() => handleClick(speaker_profile)} src="{storage_url}{speaker_profile.photo.url}"/>
                         </div>
-                        <div class="card-content">
+                        <div class="card-content p-3">
                             {#if speaker_profile.is_guest}
                             <p class="tag is-dark">Special guest</p>
                             {/if}
 
 
-                            <p class="title is-4">{speaker_profile.fullname}
+                            <p class="title is-5">{speaker_profile.fullname}
                     {#if speaker_profile.nickname}
                     "{speaker_profile.nickname}"
                     {/if}

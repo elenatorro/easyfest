@@ -248,14 +248,14 @@
 					<div class="agenda-table" style="margin-bottom:2rem;">
 						<h4 class="title is-size-5">{m.day()} {day.date} / {day.month + 1}</h4>
 						<div
-							class="columns is-1 is-mobile"
+							class="columns is-1"
 							bind:this={columnsContainer}
 							onmouseenter={handleMouseEnter}
 							onmouseleave={handleMouseLeave}
 						>
 							{#each day.tracks as track}
 								{#if track.activities.length > 0}
-									<div class="column is-half-mobile is-half-tablet is-one-quarter-desktop">
+									<div class="column is-half-tablet is-one-quarter-desktop">
 										<div class="column-header">
 											<h4 class="title has-text-white is-size-6-mobile">{track.title}</h4>
 											<p class="subtitle has-text-grey-light is-size-7-mobile">
@@ -302,7 +302,7 @@
 			{:else}
 				<div class="agenda-table" bind:this={scrollContainer}>
 					<div
-						class="columns is-1 is-mobile"
+						class="columns is-1"
 						bind:this={columnsContainer}
 						onmouseenter={handleMouseEnter}
 						onmouseleave={handleMouseLeave}
@@ -310,7 +310,7 @@
 						{#if current_day}
 							{#each current_day.tracks as track}
 								{#if track.activities.length > 0}
-									<div class="column is-half-mobile is-half-tablet is-one-quarter-desktop">
+									<div class="column is-half-tablet is-one-quarter-desktop">
 										<div class="column-header">
 											<h4 class="title has-text-white is-size-6-mobile">{track.title}</h4>
 											<p class="subtitle has-text-grey-light is-size-7-mobile">

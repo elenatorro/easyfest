@@ -8,17 +8,17 @@
     </section>
     <div class="container">
         <div class="content content-border">
-          <div class="columns ">
-            <div class="column is-three-fifths">
+          <!-- <div class="columns ">
+            <div class="column is-three-fifths"> -->
               {#if data.content}
                 <SvelteMarkdown options={{mangle: false}} source={data.content}/>
               {/if}
-            </div>
+            <!-- </div> -->
             <div class="column is-flex is-justify-content-flex-end">
               {#if data.image}
                 <img src={data.image} alt="About us image" />
               {/if}
-            </div>
+            <!-- </div> -->
         </div>
     </div>
 </section>

@@ -25,7 +25,7 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div class="card {activity.has_own_page ? 'clickable' : ''}" style="height: {height}; margin-top: {adjust}"
+<div class="card {activity.has_own_page ? 'clickable' : ''}" style="margin-top: {adjust}"
      onclick={handleActivityClick} role="button" tabindex="0">
     <div class="card-header">
         <p class="card-header-title">

@@ -35,11 +35,10 @@
           {#each data.org_profiles as publicprofile, i}
 
               <div class="column is-one-third">
-                  <div class="box">
                     <article class="media">
                       <div class="media-left">
                         <figure class="image is-64x64">
-                        <img onclick={() => handleClick(publicprofile)} src="{storage_url}{publicprofile.photo.url}"/>
+                        <img class="is-rounded" onclick={() => handleClick(publicprofile)} src="{storage_url}{publicprofile.photo.url}"/>
                         </figure>
                         </div>  
 
@@ -55,8 +54,6 @@
                         </div>
         
                       </div>
-
-                  </div>
               </div>
           {/each}
         </div>

@@ -8,7 +8,7 @@
       <h3 class="title">{data.title || m.venue_info()}</h3>
     </section>
     <div class="container">
-        <div class="content content-border">
+        <div class="content content-images content-border">
           <div class="columns">
             <div class="column is-three-fifths">
               {#if data.content}

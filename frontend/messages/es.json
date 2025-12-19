@@ -1,7 +1,7 @@
 {
     "$schema": "https://inlang.com/schema/inlang-message-format",
-    "accommodation_info": "Cómo llegar",
-    "about": "Sobre nosotros",
+    "accommodation_info": "Alojamiento",
+    "about": "El festival",
     "agenda": "Agenda",
     "an_error_has_occurred": "Ha ocurrido un error",
     "cancel": "Cancelar",
@@ -53,7 +53,7 @@
     "send": "Enviar",
     "speakers": "Ponentes",
     "streaming": "Streaming",
-    "venue_info": "Lugar",
+    "venue_info": "Cómo llegar",
     "we_sent_an_email": "Te hemos enviado un correo a {email}",
     "you_need_to_register": "Necesitas registrarte para entrar en la cola de espera y conseguir tus entradas."
 }

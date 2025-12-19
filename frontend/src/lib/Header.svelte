@@ -3,6 +3,7 @@
     import * as m from '$lib/paraglide/messages.js'
     import { i18n } from '$lib/i18n.js'
 
+    const storage_url = import.meta.env.VITE_STORAGE_URL
     import logoFallback from '../assets/images/easyfest_logo.png'
 
     const REGISTRATION = {
