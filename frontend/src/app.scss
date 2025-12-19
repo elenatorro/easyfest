@@ -645,9 +645,7 @@ body {
 
 .content-images {
     img {
-        $randomNumber: random(5);
         border: 2px solid $color-dark;
         border-radius: 20px;
-        transform: rotate(#{($randomNumber - 2)}deg);
     }
 }
