@@ -1,5 +1,6 @@
-# Build stage
-FROM node:22.16-bullseye AS build
+
+# Use Node.js for SvelteKit (adapter-node)
+FROM node:22.16-bullseye
 
 WORKDIR /app
 COPY package*.json ./
@@ -7,12 +8,6 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Serve stage
-FROM nginx:alpine
+EXPOSE 3000
 
-COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", ".svelte-kit/output/server/index.js"]
