@@ -55,7 +55,7 @@ export const fetchCMSData = async (method, path, payload, cookies, forceApiToken
     const response = await axios(`${base}${path}`, config);
     return { response: response.data };
   } catch(error) {
-    console.error(`ERROR fetching data ${method} ${base}${path}`, error.toJSON());
+    console.error(`ERROR fetching data ${method} ${base}${path}`, error);
     return {
       error: {
         status: error.status,
