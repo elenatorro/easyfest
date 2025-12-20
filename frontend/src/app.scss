@@ -293,7 +293,7 @@ a.footer-item:hover {
         width: 100%;
         box-sizing: border-box;
         padding: 0 0 0 3rem;
-        transform: rotate(2deg);
+        // transform: rotate(10deg);
 
         @include mixins.mobile {
             padding: 0;
@@ -328,7 +328,7 @@ a.footer-item:hover {
             // text-shadow: 2px 2px 50px rgba($color-violet, 0.8), 
             //              -2px -2px 50px rgba($color-orange, 0.8);
             word-break: keep-all;
-            transform: rotate(-2deg);
+            // transform: rotate(-2deg);
 
             @include mixins.mobile {
                 font-size: $font-size-xl;
