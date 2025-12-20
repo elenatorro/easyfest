@@ -75,30 +75,27 @@ export const fetchCMSData = async (method, path, payload, cookies, forceApiToken
  * @param {string} path
  * @param {object} cookies
  */
-export const fetchSingle = async (path, cookies) => {
-  const { response, error } = await fetchCMSData("GET", path, {}, cookies);
-  if (error) {
-    // If not found, return empty object
-    if (error.status === 404) {
+export const fetchSingle = async (path, cookies, locale = "es", fallbackLocale = "en") => {
+  // Try with requested locale first
+  let { response, error } = await fetchCMSData("GET", `${path}?locale=${locale}`, {}, cookies);
+  if (error || !response || response.data == null) {
+    // Fallback to default locale if not found
+    if (locale !== fallbackLocale) {
+      ({ response, error } = await fetchCMSData("GET", `${path}?locale=${fallbackLocale}`, {}, cookies));
+    }
+    if (error) {
+      if (error.status === 404) {
+        return {};
+      }
+      return { error };
+    }
+    if (!response || response.data == null) {
       return {};
     }
-    return { error };
   }
   if (response) {
-    /* For a single CMS type, the response is like
-     *   {
-     *     "data": {
-     *       "id": 12345,
-     *       "attr1": val1,
-     *       "attr2": val2,
-     *       ...
-     *     },
-     *     "meta": {}
-     *   }
-     */
     return response.data;
   } else {
-    console.error("->", error.message)
     return null;
   }
 }
@@ -133,7 +130,9 @@ export const fetchCollection = async (path, cookies) => {
     */
     return response.data;
   } else {
-    console.error("->", error.message)
+    if (error && error.message) {
+      console.error("->", error.message);
+    }
     return [];
   }
 }
@@ -157,7 +156,9 @@ export const fetchBasic = async (path, cookies) => {
      */
     return response;
   } else {
-    console.error("->", error.message)
+    if (error && error.message) {
+      console.error("->", error.message);
+    }
     return null;
   }
 }
@@ -171,13 +172,13 @@ export const fetchBasic = async (path, cookies) => {
 export const apiClient = (method, path, data, authToken) => {
   const authHeaders = authToken ? {"Authorization": `Bearer ${authToken}`} : {}
 
-  const config = {
-		method,
-    headers: {...baseHeaders, ...authHeaders},
-  }
-  if (data) {
-    config.data = data && JSON.stringify(data)
-  }
+    const config = {
+      method,
+      headers: { ...baseHeaders, ...authHeaders },
+    };
+    if (data) {
+      config.data = JSON.stringify(data);
+    }
 
 	return axios(`${base}/${path}`, config)
     .then(response => response.data)
