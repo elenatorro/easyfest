@@ -1,44 +1,31 @@
-version: "3.9"
 services:
+  backend:
+    build: ./backend
+    container_name: easyfest-backend
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./data:/app/.tmp
+    expose:
+      - "1337"
+    restart: unless-stopped
 
   frontend:
-    build:
-      context: ./frontend
+    build: ./frontend
     container_name: easyfest-frontend
-    restart: unless-stopped
-    volumes:
-      - frontend_build:/app/build
-    networks:
-      - easyfest_default
-
-  backend:
-    build:
-      context: ./backend
-    container_name: easyfest-backend
-    restart: unless-stopped
-    networks:
-      - easyfest_default
-    ports:
-      - "1337:1337"
+    expose:
+      - "3000"
+    depends_on:
+      - backend
 
   nginx:
     image: nginx:alpine
     container_name: easyfest-nginx
-    restart: unless-stopped
     ports:
       - "80:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - frontend_build:/usr/share/nginx/html:ro
     depends_on:
       - frontend
       - backend
-    networks:
-      - easyfest_default
-
-networks:
-  easyfest_default:
-    external: true
-
-volumes:
-  frontend_build:
+    restart: unless-stopped
