@@ -1,6 +1,5 @@
 
-# Use Node.js for SvelteKit (adapter-node)
-FROM node:22.16-bullseye
+FROM node:22.16-bullseye as build
 
 WORKDIR /app
 COPY package*.json ./
@@ -8,6 +7,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-EXPOSE 3000
-
-CMD ["node", ".svelte-kit/output/server/index.js"]
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
