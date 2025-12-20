@@ -55,10 +55,14 @@ export const fetchCMSData = async (method, path, payload, cookies, forceApiToken
     const response = await axios(`${base}${path}`, config);
     return { response: response.data };
   } catch(error) {
+    // Handle 404 and missing content gracefully
+    if (error.response && error.response.status === 404) {
+      return { response: {} };
+    }
     console.error(`ERROR fetching data ${method} ${base}${path}`, error);
     return {
       error: {
-        status: error.status,
+        status: error.status || (error.response && error.response.status),
         message: error.message
       }
     };
@@ -73,6 +77,13 @@ export const fetchCMSData = async (method, path, payload, cookies, forceApiToken
  */
 export const fetchSingle = async (path, cookies) => {
   const { response, error } = await fetchCMSData("GET", path, {}, cookies);
+  if (error) {
+    // If not found, return empty object
+    if (error.status === 404) {
+      return {};
+    }
+    return { error };
+  }
   if (response) {
     /* For a single CMS type, the response is like
      *   {
