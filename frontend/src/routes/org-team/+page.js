@@ -4,8 +4,8 @@ import { fetchSingle, fetchCollection } from '../../services/api';
 export async function load() {
     let data = {}
 	const [orgTeamEntry, profileEntries] = await Promise.all([
-        fetchSingle("/org-team", {}),
-        fetchCollection("/public-profiles?filters[is_org][$eq]=true&populate=*&sort=order:asc", {}),
+        fetchSingle("/org-team"),
+        fetchCollection("/public-profiles?filters[is_org][$eq]=true&populate=*&sort=order:asc"),
     ]);
     if (orgTeamEntry || profileEntries) {
         data = {

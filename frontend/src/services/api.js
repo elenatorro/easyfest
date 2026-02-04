@@ -73,7 +73,7 @@ export const fetchCMSData = async (method, path, payload, cookies, forceApiToken
  * Call backend API to retrieve a single type.
  * 
  * @param {string} path
- * @param {object} cookies
+ * @param {object} [cookies]
  */
 export const fetchSingle = async (path, cookies, locale = "es", fallbackLocale = "en") => {
   // Try with requested locale first
@@ -104,7 +104,7 @@ export const fetchSingle = async (path, cookies, locale = "es", fallbackLocale =
  * call backend api to retrieve a collection type.
  * 
  * @param {string} path
- * @param {object} cookies
+ * @param {object} [cookies]
  */
 export const fetchCollection = async (path, cookies) => {
   const { response, error } = await fetchCMSData("GET", path, {}, cookies);
