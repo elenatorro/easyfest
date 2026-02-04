@@ -12,6 +12,13 @@
 
   let { data, children } = $props();
 
+  const storage_url = import.meta.env.VITE_STORAGE_URL;
+  
+  // Use thumbnail from backend SEO data if available, otherwise fallback to siteConfig
+  const ogImage = data.thumbnail?.url 
+    ? `${storage_url}${data.thumbnail.url}` 
+    : siteConfig.image;
+
   const title = data.tagline ? `${data.title} | ${data.tagline}` : data.title
 </script>
 
@@ -26,7 +33,7 @@
   <meta property="og:title" content={siteConfig.title} />
   <meta property="og:description" content={siteConfig.description} />
   <meta property="og:url" content={siteConfig.url} />
-  <meta property="og:image" content={siteConfig.image} />
+  <meta property="og:image" content={ogImage} />
   <meta property="og:image:width" content={siteConfig.imageWidth} />
   <meta property="og:image:height" content={siteConfig.imageHeight} />
 </svelte:head>
