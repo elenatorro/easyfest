@@ -303,7 +303,6 @@ a.footer-item:hover {
 
         img {
             width: 100%;
-            min-width: 400px;
             height: auto;
             border: 2px solid $color-dark;
             border-radius: 50px;
@@ -337,7 +336,7 @@ a.footer-item:hover {
     }
 
 	.subtitle_group {
-		padding: 1em 0;
+		padding: 2em;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -370,11 +369,11 @@ a.footer-item:hover {
 }
 
 .section {
-	padding: 2rem 5rem;
+	padding: 1rem;
 }
 
 .subsection {
-    padding: 3rem 1em;
+    padding: 1rem;
 }
 
 footer {
