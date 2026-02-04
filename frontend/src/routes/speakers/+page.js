@@ -4,8 +4,8 @@ import { fetchSingle, fetchCollection } from '../../services/api';
 export async function load() {
     let data = {}
 	const [speakersEntry, profileEntries] = await Promise.all([
-        fetchSingle("/speakers", {}),
-        fetchCollection("/public-profiles?filters[$or][0][is_guest][$eq]=true&filters[$or][1][is_speaker][$eq]=true&populate=*&sort=order:asc", {}),
+        fetchSingle("/speakers"),
+        fetchCollection("/public-profiles?filters[$or][0][is_guest][$eq]=true&filters[$or][1][is_speaker][$eq]=true&populate=*&sort=order:asc"),
     ]);
     if (speakersEntry || profileEntries) {
         data = {

@@ -1,4 +1,4 @@
-import { encodeQuery, fetchSingle } from '../services/api';
+import { encodeQuery, fetchSingle, fetchCollection } from '../services/api';
 
 const homepagePath = `/homepage?${encodeQuery({
 	populate: '*'
@@ -21,9 +21,9 @@ export async function load() {
 	let data = {};
 
 	const [homepageData, speakersData, siteData] = await Promise.all([
-		fetchSingle(homepagePath, {}),
-		fetchSingle(speakersPath, {}),
-		fetchSingle(sitePath, {})
+		fetchSingle(homepagePath),
+		fetchCollection(speakersPath),
+		fetchSingle(sitePath)
 	]);
 	data = {
 		homepage: homepageData,
