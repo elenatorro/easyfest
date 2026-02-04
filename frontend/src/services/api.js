@@ -77,11 +77,12 @@ export const fetchCMSData = async (method, path, payload, cookies, forceApiToken
  */
 export const fetchSingle = async (path, cookies, locale = "es", fallbackLocale = "en") => {
   // Try with requested locale first
-  let { response, error } = await fetchCMSData("GET", `${path}?locale=${locale}`, {}, cookies);
+  const separator = path.includes('?') ? '&' : '?';
+  let { response, error } = await fetchCMSData("GET", `${path}${separator}locale=${locale}`, {}, cookies);
   if (error || !response || response.data == null) {
     // Fallback to default locale if not found
     if (locale !== fallbackLocale) {
-      ({ response, error } = await fetchCMSData("GET", `${path}?locale=${fallbackLocale}`, {}, cookies));
+      ({ response, error } = await fetchCMSData("GET", `${path}${separator}locale=${fallbackLocale}`, {}, cookies));
     }
     if (error) {
       if (error.status === 404) {
