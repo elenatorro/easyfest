@@ -9,7 +9,7 @@ const speakersPath = `/public-profiles?${encodeQuery({
 		$or: [{ is_guest: { $eq: true } }, { is_speaker: { $eq: true } }]
 	},
 	populate: '*',
-	sort: ['order:asc']
+	sort: 'order:asc'
 })}`;
 
 const sitePath = `/site?${encodeQuery({
@@ -17,13 +17,13 @@ const sitePath = `/site?${encodeQuery({
 })}`;
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ params }) {
+export async function load() {
 	let data = {};
 
 	const [homepageData, speakersData, siteData] = await Promise.all([
-		fetchSingle(homepagePath),
-		fetchSingle(speakersPath),
-		fetchSingle(sitePath)
+		fetchSingle(homepagePath, {}),
+		fetchSingle(speakersPath, {}),
+		fetchSingle(sitePath, {})
 	]);
 	data = {
 		homepage: homepageData,
