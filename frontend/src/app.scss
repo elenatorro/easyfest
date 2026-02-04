@@ -314,8 +314,7 @@ a.footer-item:hover {
             width: 100%;
             height: auto;
             border: 2px solid $color-dark;
-            border-radius: 50px;
-            background-color: $color-secondary;
+            transform: rotate(3deg);
         }
     }
 
@@ -662,6 +661,5 @@ body {
 .content-images {
     img {
         border: 2px solid $color-dark;
-		transform: rotate(3deg);
     }
 }
