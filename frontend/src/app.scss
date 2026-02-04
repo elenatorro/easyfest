@@ -650,6 +650,14 @@ body {
     }
 }
 
+.content a {
+    color: $color-violet;
+       text-decoration: underline;
+}
+
+.content a:hover {
+    color: $color-orange;
+}
 
 .content-images {
     img {
