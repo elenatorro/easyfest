@@ -248,6 +248,15 @@ a {
     color: $color-primary;
 }
 
+.content a {
+    color: $color-violet;
+	text-decoration: underline;
+}
+
+.content a:hover {
+    color: $color-orange;
+}
+
 a.navbar-item:hover {
     background-color: transparent;
     color: $color-secondary;
@@ -645,6 +654,6 @@ body {
 .content-images {
     img {
         border: 2px solid $color-dark;
-        border-radius: 20px;
+		transform: rotate(3deg);
     }
 }
