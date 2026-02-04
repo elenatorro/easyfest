@@ -537,7 +537,7 @@ footer {
 
 .agenda-table {
 	position: relative;
-	overflow: scroll;
+	overflow: auto;
 	height: 100vh;
 
 	.card {
