@@ -25,7 +25,7 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div class="card {activity.has_own_page ? 'clickable' : ''}" style="min-height: {height}; margin-top: {adjust}"
+<div class="card {activity.has_own_page ? 'clickable' : ''}" style="--card-min-height: {height}; margin-top: {adjust}"
      onclick={handleActivityClick} role="button" tabindex="0">
     <div class="card-header">
         <p class="card-header-title">
@@ -73,9 +73,17 @@
 </div>
 
 <style>
+    @use "bulma/sass/utilities/mixins";
+
     .card {
         margin-bottom: 2rem;
         box-shadow: none;
+    }
+
+    @include mixins.tablet {
+        .card {
+            min-height: var(--card-min-height);
+        }
     }
 
     .card-header {

@@ -94,9 +94,12 @@
 		return minutes;
 	}
 
+	// Pixels per compressed minute. Reduce to make the agenda more compact.
+	const REM_PER_MINUTE = 0.2;
+
 	function activityHeight(activity) {
 		const minutes = compressMinutes(startDate(activity), endDate(activity), 7);
-		return (minutes * 0.3 - 2).toString() + 'rem';
+		return (minutes * REM_PER_MINUTE - 2).toString() + 'rem';
 	}
 
 	function activityHeightDebug(activity) {
@@ -107,7 +110,7 @@
 	function activityAdjust(activity) {
 		const minutes = compressMinutes(startDate(activity), adjustStartDate(activity), 7);
 		if (minutes !== 0) {
-			return (-minutes * 0.3).toString() + 'rem';
+			return (-minutes * REM_PER_MINUTE).toString() + 'rem';
 		}
 	}
 
@@ -118,7 +121,7 @@
 
 	function activityTop(track, activity) {
 		const minutes = compressMinutes(new Date(track.start), startDate(activity), 7);
-		return (minutes * 0.3).toString() + 'rem';
+		return (minutes * REM_PER_MINUTE).toString() + 'rem';
 	}
 
 	function columnHeight(day) {
@@ -131,7 +134,7 @@
 		}
 		const dayStart = new Date(activeTracks[0].start);
 		const minutes = compressMinutes(dayStart, maxEnd, 7);
-		return (minutes * 0.3).toString() + 'rem';
+		return (minutes * REM_PER_MINUTE).toString() + 'rem';
 	}
 
 	function equalizeHeaders(dayColumnsEl) {
@@ -402,8 +405,22 @@
 
 <style lang="scss">
 	@use 'bulma/sass/layout/container';
+	@use 'bulma/sass/utilities/mixins';
+
 	.activity-wrapper {
 		position: relative;
+	}
+
+	@include mixins.mobile {
+		.column-activities {
+			position: static !important;
+			height: auto !important;
+
+			> div[style] {
+				position: static !important;
+				top: auto !important;
+			}
+		}
 	}
 
 	.column-extender {
