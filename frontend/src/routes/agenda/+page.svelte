@@ -116,9 +116,40 @@
 		return (-minutes * 2).toString() + 'px';
 	}
 
+	function activityTop(track, activity) {
+		const minutes = compressMinutes(new Date(track.start), startDate(activity), 7);
+		return (minutes * 0.3).toString() + 'rem';
+	}
+
+	function columnHeight(day) {
+		const activeTracks = day.tracks.filter((t) => t.activities.length > 0);
+		if (activeTracks.length === 0) return '0rem';
+		let maxEnd = null;
+		for (const track of activeTracks) {
+			const trackEnd = new Date(track.end);
+			if (!maxEnd || trackEnd > maxEnd) maxEnd = trackEnd;
+		}
+		const dayStart = new Date(activeTracks[0].start);
+		const minutes = compressMinutes(dayStart, maxEnd, 7);
+		return (minutes * 0.3).toString() + 'rem';
+	}
+
+	function equalizeHeaders(dayColumnsEl) {
+		const headers = dayColumnsEl.querySelectorAll(':scope > .column > .column-header');
+		if (headers.length === 0) return;
+		headers.forEach((h) => (h.style.height = ''));
+		let maxHeight = 0;
+		headers.forEach((h) => {
+			maxHeight = Math.max(maxHeight, h.offsetHeight);
+		});
+		headers.forEach((h) => (h.style.height = maxHeight + 'px'));
+	}
+
 	function handleResize() {
 		containerWidth = columnsContainer.scrollWidth - 12;
-		console.log('Container width:', containerWidth);
+		if (container) {
+			container.querySelectorAll('.agenda-day-columns').forEach(equalizeHeaders);
+		}
 	}
 
 	onMount(() => {
@@ -248,7 +279,7 @@
 					<div class="agenda-table" style="margin-bottom:2rem;">
 						<h4 class="title is-size-5">{m.day()} {day.date} / {day.month + 1}</h4>
 						<div
-							class="columns is-1"
+							class="columns is-1 agenda-day-columns"
 							bind:this={columnsContainer}
 							onmouseenter={handleMouseEnter}
 							onmouseleave={handleMouseLeave}
@@ -262,37 +293,33 @@
 												{track.description}
 											</p>
 										</div>
-										{#each track.activities as activity}
-											{#if activity.is_filler}
-												<ActivityFiller
-													{activity}
-													height={activityHeight(activity)}
-													adjust={activityAdjust(activity)}
-													hideInMobile={true}
-												/>
-											{:else if !activity.is_across_tracks}
-												<ActivityCard
-													{activity}
-													height={activityHeight(activity)}
-													adjust={activityAdjust(activity)}
-												/>
-											{:else}
-												<div class="activity-wrapper">
-													<ActivityFiller
-														{activity}
-														height={activityHeight(activity)}
-														adjust={activityAdjust(activity)}
-													/>
-													<div class="column-extender" style="width: {containerWidth}px">
-														<ActivityCard
-															{activity}
-															height={activityHeight(activity)}
-															adjust={activityAdjust(activity)}
-														/>
-													</div>
-												</div>
-											{/if}
-										{/each}
+										<div class="column-activities" style="position: relative; height: {columnHeight(day)}">
+											{#each track.activities as activity}
+												{#if !activity.is_filler}
+													{#if !activity.is_across_tracks}
+														<div style="position: absolute; top: {activityTop(track, activity)}; left: 0; right: 0;">
+															<ActivityCard
+																{activity}
+																height={activityHeight(activity)}
+																adjust={activityAdjust(activity)}
+															/>
+														</div>
+													{:else}
+														<div style="position: absolute; top: {activityTop(track, activity)}; left: 0; right: 0;">
+															<div class="activity-wrapper">
+																<div class="column-extender" style="width: {containerWidth}px">
+																	<ActivityCard
+																		{activity}
+																		height={activityHeight(activity)}
+																		adjust={activityAdjust(activity)}
+																	/>
+																</div>
+															</div>
+														</div>
+													{/if}
+												{/if}
+											{/each}
+										</div>
 									</div>
 								{/if}
 							{/each}
@@ -302,7 +329,7 @@
 			{:else}
 				<div class="agenda-table" bind:this={scrollContainer}>
 					<div
-						class="columns is-1"
+						class="columns is-1 agenda-day-columns"
 						bind:this={columnsContainer}
 						onmouseenter={handleMouseEnter}
 						onmouseleave={handleMouseLeave}
@@ -317,37 +344,33 @@
 												{track.description}
 											</p>
 										</div>
-										{#each track.activities as activity}
-											{#if activity.is_filler}
-												<ActivityFiller
-													{activity}
-													height={activityHeight(activity)}
-													adjust={activityAdjust(activity)}
-													hideInMobile={true}
-												/>
-											{:else if !activity.is_across_tracks}
-												<ActivityCard
-													{activity}
-													height={activityHeight(activity)}
-													adjust={activityAdjust(activity)}
-												/>
-											{:else}
-												<div class="activity-wrapper">
-													<ActivityFiller
-														{activity}
-														height={activityHeight(activity)}
-														adjust={activityAdjust(activity)}
-													/>
-													<div class="column-extender" style="width: {containerWidth}px">
-														<ActivityCard
-															{activity}
-															height={activityHeight(activity)}
-															adjust={activityAdjust(activity)}
-														/>
-													</div>
-												</div>
-											{/if}
-										{/each}
+										<div class="column-activities" style="position: relative; height: {columnHeight(current_day)}">
+											{#each track.activities as activity}
+												{#if !activity.is_filler}
+													{#if !activity.is_across_tracks}
+														<div style="position: absolute; top: {activityTop(track, activity)}; left: 0; right: 0;">
+															<ActivityCard
+																{activity}
+																height={activityHeight(activity)}
+																adjust={activityAdjust(activity)}
+															/>
+														</div>
+													{:else}
+														<div style="position: absolute; top: {activityTop(track, activity)}; left: 0; right: 0;">
+															<div class="activity-wrapper">
+																<div class="column-extender" style="width: {containerWidth}px">
+																	<ActivityCard
+																		{activity}
+																		height={activityHeight(activity)}
+																		adjust={activityAdjust(activity)}
+																	/>
+																</div>
+															</div>
+														</div>
+													{/if}
+												{/if}
+											{/each}
+										</div>
 									</div>
 								{/if}
 							{/each}
