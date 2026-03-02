@@ -119,9 +119,12 @@
 		return (-minutes * 2).toString() + 'px';
 	}
 
+	function activityTopRem(track, activity) {
+		return compressMinutes(new Date(track.start), startDate(activity), 7) * REM_PER_MINUTE;
+	}
+
 	function activityTop(track, activity) {
-		const minutes = compressMinutes(new Date(track.start), startDate(activity), 7);
-		return (minutes * REM_PER_MINUTE).toString() + 'rem';
+		return activityTopRem(track, activity).toString() + 'rem';
 	}
 
 	function columnHeight(day) {
@@ -137,6 +140,27 @@
 		return (minutes * REM_PER_MINUTE).toString() + 'rem';
 	}
 
+	function resolveColumnOverlaps(columnEl) {
+		const wrappers = Array.from(columnEl.querySelectorAll(':scope > [data-time-top]'));
+		if (wrappers.length === 0) return;
+		const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+		const GAP_PX = 8;
+		wrappers.sort((a, b) => parseFloat(a.dataset.timeTop) - parseFloat(b.dataset.timeTop));
+		let minTopPx = 0;
+		wrappers.forEach((wrapper) => {
+			const timeTopPx = parseFloat(wrapper.dataset.timeTop) * rootFontSize;
+			const adjustedTopPx = Math.max(timeTopPx, minTopPx);
+			wrapper.style.top = adjustedTopPx / rootFontSize + 'rem';
+			minTopPx = adjustedTopPx + wrapper.offsetHeight + GAP_PX;
+		});
+		const lastWrapper = wrappers[wrappers.length - 1];
+		const lastBottomPx = parseFloat(lastWrapper.style.top) * rootFontSize + lastWrapper.offsetHeight;
+		const currentHeightPx = parseFloat(columnEl.style.height) * rootFontSize;
+		if (lastBottomPx > currentHeightPx) {
+			columnEl.style.height = lastBottomPx / rootFontSize + 2 + 'rem';
+		}
+	}
+
 	function equalizeHeaders(dayColumnsEl) {
 		const headers = dayColumnsEl.querySelectorAll(':scope > .column > .column-header');
 		if (headers.length === 0) return;
@@ -149,9 +173,11 @@
 	}
 
 	function handleResize() {
+		if (!columnsContainer) return;
 		containerWidth = columnsContainer.scrollWidth - 12;
 		if (container) {
 			container.querySelectorAll('.agenda-day-columns').forEach(equalizeHeaders);
+			container.querySelectorAll('.column-activities').forEach(resolveColumnOverlaps);
 		}
 	}
 
@@ -300,7 +326,7 @@
 											{#each track.activities as activity}
 												{#if !activity.is_filler}
 													{#if !activity.is_across_tracks}
-														<div style="position: absolute; top: {activityTop(track, activity)}; left: 0; right: 0;">
+														<div style="position: absolute; top: {activityTop(track, activity)}; left: 0; right: 0;" data-time-top={activityTopRem(track, activity)}>
 															<ActivityCard
 																{activity}
 																height={activityHeight(activity)}
@@ -308,7 +334,7 @@
 															/>
 														</div>
 													{:else}
-														<div style="position: absolute; top: {activityTop(track, activity)}; left: 0; right: 0;">
+														<div style="position: absolute; top: {activityTop(track, activity)}; left: 0; right: 0;" data-time-top={activityTopRem(track, activity)}>
 															<div class="activity-wrapper">
 																<div class="column-extender" style="width: {containerWidth}px">
 																	<ActivityCard
@@ -351,7 +377,7 @@
 											{#each track.activities as activity}
 												{#if !activity.is_filler}
 													{#if !activity.is_across_tracks}
-														<div style="position: absolute; top: {activityTop(track, activity)}; left: 0; right: 0;">
+														<div style="position: absolute; top: {activityTop(track, activity)}; left: 0; right: 0;" data-time-top={activityTopRem(track, activity)}>
 															<ActivityCard
 																{activity}
 																height={activityHeight(activity)}
@@ -359,7 +385,7 @@
 															/>
 														</div>
 													{:else}
-														<div style="position: absolute; top: {activityTop(track, activity)}; left: 0; right: 0;">
+														<div style="position: absolute; top: {activityTop(track, activity)}; left: 0; right: 0;" data-time-top={activityTopRem(track, activity)}>
 															<div class="activity-wrapper">
 																<div class="column-extender" style="width: {containerWidth}px">
 																	<ActivityCard

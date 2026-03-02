@@ -72,7 +72,7 @@
     {/if}
 </div>
 
-<style>
+<style lang="scss">
     @use "bulma/sass/utilities/mixins";
 
     .card {
