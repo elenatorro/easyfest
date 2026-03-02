@@ -140,25 +140,63 @@
 		return (minutes * REM_PER_MINUTE).toString() + 'rem';
 	}
 
-	function resolveColumnOverlaps(columnEl) {
-		const wrappers = Array.from(columnEl.querySelectorAll(':scope > [data-time-top]'));
-		if (wrappers.length === 0) return;
+	function resolveAllColumnsOverlaps(dayColumnsEl) {
+		const columns = Array.from(dayColumnsEl.querySelectorAll(':scope > .column > .column-activities'));
+		if (columns.length === 0) return;
 		const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
 		const GAP_PX = 8;
-		wrappers.sort((a, b) => parseFloat(a.dataset.timeTop) - parseFloat(b.dataset.timeTop));
-		let minTopPx = 0;
-		wrappers.forEach((wrapper) => {
-			const timeTopPx = parseFloat(wrapper.dataset.timeTop) * rootFontSize;
-			const adjustedTopPx = Math.max(timeTopPx, minTopPx);
-			wrapper.style.top = adjustedTopPx / rootFontSize + 'rem';
-			minTopPx = adjustedTopPx + wrapper.offsetHeight + GAP_PX;
+
+		// Collect all wrappers across all columns
+		const allEntries = columns.flatMap((col) =>
+			Array.from(col.querySelectorAll(':scope > [data-time-top]')).map((wrapper) => ({
+				wrapper,
+				col,
+				timeTop: parseFloat(wrapper.dataset.timeTop)
+			}))
+		);
+		if (allEntries.length === 0) return;
+
+		// Group by start time so same-time activities sync across columns
+		const timeGroups = new Map();
+		allEntries.forEach((entry) => {
+			if (!timeGroups.has(entry.timeTop)) timeGroups.set(entry.timeTop, []);
+			timeGroups.get(entry.timeTop).push(entry);
 		});
-		const lastWrapper = wrappers[wrappers.length - 1];
-		const lastBottomPx = parseFloat(lastWrapper.style.top) * rootFontSize + lastWrapper.offsetHeight;
-		const currentHeightPx = parseFloat(columnEl.style.height) * rootFontSize;
-		if (lastBottomPx > currentHeightPx) {
-			columnEl.style.height = lastBottomPx / rootFontSize + 2 + 'rem';
+		const sortedTimes = Array.from(timeGroups.keys()).sort((a, b) => a - b);
+
+		// Track each column's current minimum top (to avoid within-column overlaps)
+		const columnMinTop = new Map(columns.map((col) => [col, 0]));
+
+		for (const time of sortedTimes) {
+			const entries = timeGroups.get(time);
+			const timeTopPx = time * rootFontSize;
+
+			// The adjusted top must satisfy all columns that have an activity at this time
+			let maxAdjustedTopPx = timeTopPx;
+			entries.forEach(({ col }) => {
+				maxAdjustedTopPx = Math.max(maxAdjustedTopPx, columnMinTop.get(col) || 0);
+			});
+
+			// Apply the same top to all activities in this time group
+			entries.forEach(({ wrapper, col }) => {
+				wrapper.style.top = maxAdjustedTopPx / rootFontSize + 'rem';
+				const newMinTop = maxAdjustedTopPx + wrapper.offsetHeight + GAP_PX;
+				columnMinTop.set(col, newMinTop);
+			});
 		}
+
+		// Normalize all column heights to the tallest one
+		let maxHeightPx = 0;
+		columns.forEach((col) => {
+			const wrappers = Array.from(col.querySelectorAll(':scope > [data-time-top]'));
+			if (wrappers.length === 0) return;
+			const last = wrappers[wrappers.length - 1];
+			const bottomPx = parseFloat(last.style.top) * rootFontSize + last.offsetHeight;
+			maxHeightPx = Math.max(maxHeightPx, bottomPx);
+		});
+		columns.forEach((col) => {
+			col.style.height = maxHeightPx / rootFontSize + 2 + 'rem';
+		});
 	}
 
 	function equalizeHeaders(dayColumnsEl) {
@@ -177,7 +215,7 @@
 		containerWidth = columnsContainer.scrollWidth - 12;
 		if (container) {
 			container.querySelectorAll('.agenda-day-columns').forEach(equalizeHeaders);
-			container.querySelectorAll('.column-activities').forEach(resolveColumnOverlaps);
+			container.querySelectorAll('.agenda-day-columns').forEach(resolveAllColumnsOverlaps);
 		}
 	}
 
