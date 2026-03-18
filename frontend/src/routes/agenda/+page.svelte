@@ -197,6 +197,15 @@
 		columns.forEach((col) => {
 			col.style.height = maxHeightPx / rootFontSize + 2 + 'rem';
 		});
+
+		// Set the .columns container height so the agenda-table grows to fit
+		const headerHeight = dayColumnsEl.querySelector(':scope > .column > .column-header')?.offsetHeight || 0;
+		const totalHeight = (maxHeightPx + headerHeight + GAP_PX) / rootFontSize + 2;
+		dayColumnsEl.style.height = totalHeight + 'rem';
+		const agendaTable = dayColumnsEl.closest('.agenda-table');
+		if (agendaTable) {
+			agendaTable.style.minHeight = (totalHeight + 2) + 'rem';
+		}
 	}
 
 	function equalizeHeaders(dayColumnsEl) {
@@ -476,11 +485,6 @@
 	}
 
 	@include mixins.mobile {
-		:global(.agenda-table) {
-			height: auto !important;
-			overflow: visible !important;
-		}
-
 		.column-activities {
 			position: static !important;
 			height: auto !important;
