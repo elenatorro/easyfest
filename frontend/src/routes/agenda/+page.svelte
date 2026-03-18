@@ -17,6 +17,7 @@
 	let container = $state();
 	let columnsContainer;
 	let containerWidth = $state();
+	let mobile = $state(false);
 
 	function handleDayClick(day) {
 		current_day = day;
@@ -127,12 +128,25 @@
 		return activityTopRem(track, activity).toString() + 'rem';
 	}
 
-	function columnHeight(day) {
+	function columnHeight(day, track) {
+		if (track) {
+			// Per-track height: from track start to its last activity end
+			const activities = track.activities.filter((a) => !a.is_filler);
+			if (activities.length === 0) return '0rem';
+			let maxEnd = null;
+			for (const activity of activities) {
+				const end = endDate(activity);
+				if (!maxEnd || end > maxEnd) maxEnd = end;
+			}
+			const minutes = compressMinutes(new Date(track.start), maxEnd, 7);
+			return (minutes * REM_PER_MINUTE).toString() + 'rem';
+		}
+		// Full day height: shared coordinate space for absolute positioning
 		const activeTracks = day.tracks.filter((t) => t.activities.length > 0);
 		if (activeTracks.length === 0) return '0rem';
 		let maxEnd = null;
-		for (const track of activeTracks) {
-			const trackEnd = new Date(track.end);
+		for (const t of activeTracks) {
+			const trackEnd = new Date(t.end);
 			if (!maxEnd || trackEnd > maxEnd) maxEnd = trackEnd;
 		}
 		const dayStart = new Date(activeTracks[0].start);
@@ -229,6 +243,7 @@
 
 	function handleResize() {
 		if (!columnsContainer) return;
+		mobile = isMobile();
 		containerWidth = columnsContainer.scrollWidth - 12;
 		if (container) {
 			container.querySelectorAll('.agenda-day-columns').forEach(equalizeHeaders);
@@ -377,7 +392,7 @@
 												{track.description}
 											</p>
 										</div>
-										<div class="column-activities" style="position: relative; height: {columnHeight(day)}">
+										<div class="column-activities" style="position: relative; height: {columnHeight(day, mobile ? track : null)}">
 											{#each track.activities as activity}
 												{#if !activity.is_filler}
 													{#if !activity.is_across_tracks}
@@ -428,7 +443,7 @@
 												{track.description}
 											</p>
 										</div>
-										<div class="column-activities" style="position: relative; height: {columnHeight(current_day)}">
+										<div class="column-activities" style="position: relative; height: {columnHeight(current_day, mobile ? track : null)}">
 											{#each track.activities as activity}
 												{#if !activity.is_filler}
 													{#if !activity.is_across_tracks}
@@ -499,7 +514,6 @@
 
 		.column-activities {
 			position: static !important;
-			height: auto !important;
 
 			> div[style] {
 				position: static !important;
