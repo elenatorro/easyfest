@@ -140,9 +140,17 @@
 		return (minutes * REM_PER_MINUTE).toString() + 'rem';
 	}
 
+	function isMobile() {
+		return window.matchMedia('(max-width: 768px)').matches;
+	}
+
 	function resolveAllColumnsOverlaps(dayColumnsEl) {
 		const columns = Array.from(dayColumnsEl.querySelectorAll(':scope > .column > .column-activities'));
 		if (columns.length === 0) return;
+
+		// On mobile, layout is static flow — no overlap resolution or height calc needed
+		if (isMobile()) return;
+
 		const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
 		const GAP_PX = 8;
 
@@ -485,6 +493,10 @@
 	}
 
 	@include mixins.mobile {
+		:global(.agenda-table) {
+			height: auto !important;
+		}
+
 		.column-activities {
 			position: static !important;
 			height: auto !important;
