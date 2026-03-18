@@ -476,6 +476,11 @@
 	}
 
 	@include mixins.mobile {
+		:global(.agenda-table) {
+			height: auto !important;
+			overflow: visible !important;
+		}
+
 		.column-activities {
 			position: static !important;
 			height: auto !important;
