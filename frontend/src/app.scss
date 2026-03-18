@@ -562,6 +562,10 @@ footer {
 	.columns {
 		position: absolute;
 		width: 100%;
+
+		@media only screen and (max-width: 768px) {
+			position: static;
+		}
 	}
 
 	.tag.is-info {
